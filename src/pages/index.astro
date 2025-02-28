@@ -1,11 +1,42 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import glob from 'fast-glob';
+import matter from 'gray-matter';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const postFiles = await glob('./src/pages/posts/*.md');
+
+const posts = postFiles.map((file) => {
+  const { data } = matter.read(file);
+  const slug = (file.split('/').pop() || '').replace('.md', '');
+  return {
+    title: data.title,
+    summary: data.summary,
+    date: data.date,
+    slug,
+  };
+});
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trisha's Blog</title>
+	<link rel="stylesheet" href="/src/styles/global.css">
+  </head>
+  <body>
+    <h1>Welcome to my blog!</h1>
+
+    <h2>All Blog Posts</h2>
+    <ul>
+      {posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.slug}/`}>
+            <h3>{post.title}</h3>
+            <p>{post.summary}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>

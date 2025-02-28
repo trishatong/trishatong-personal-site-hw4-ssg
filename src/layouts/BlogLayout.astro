@@ -1,0 +1,32 @@
+---
+const { frontmatter, Content } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{frontmatter.title} | My Blog</title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">Blog</a></h1>
+      <nav>
+        <a href="/">Home</a>
+      </nav>
+    </header>
+
+    <main>
+      <article>
+        <h2>{frontmatter.title}</h2>
+        <p><em>{frontmatter.date}</em></p>
+        <Content />
+      </article>
+    </main>
+
+    <footer>
+      <p>© 2025 Trisha's Blog</p>
+    </footer>
+  </body>
+</html>
